@@ -190,10 +190,13 @@ theme_override_font_sizes/font_size = 12
 text = "Your Turn!!"
 horizontal_alignment = 1
 
-[node name="GameController" type="Node2D" parent="." node_paths=PackedStringArray("turn_panel", "card_container", "player_container")]
+[node name="GameController" type="Node2D" parent="." node_paths=PackedStringArray("timer", "turn_panel", "card_container", "player_container")]
 script = ExtResource("6_bbamg")
+timer = NodePath("Timer")
 turn_panel = NodePath("../card_layer/Turn_Panel")
 card_container = NodePath("../card_layer/card_container")
 player_container = NodePath("../ui_canvas/player_container")
+
+[node name="Timer" type="Timer" parent="GameController"]
 
 [connection signal="input_event" from="card_layer/Area2D" to="GameController" method="_on_area_2d_input_event"]

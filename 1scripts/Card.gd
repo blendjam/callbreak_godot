@@ -7,7 +7,7 @@ var card_value = "0X"
 var target_parent
 var target_position = Vector2.ZERO
 var target_scale = Vector2.ONE * 0.2
-var selectable = false
+var selectable = true
 var old_parent
 signal card_dragged
 signal card_thrown
@@ -23,26 +23,9 @@ func _ready():
 	old_parent = get_parent()
 	game_controller = get_node("/root/GameScene/GameController")
 
-func throw():
-	var target_parent = get_tree().root.get_node("GameScene/ui_canvas/card_holder")
-	var card_instance = self
-	if find_child(card_instance.get_name()) != null || target_parent.find_child(card_instance.get_name()) != null: return
-
-	add_child(card_instance)
-	card_instance.scale= Vector2.ONE * 0.2
-	card_instance.target_position = get_viewport_rect().size/2 - (card_instance.size / 2 * card_instance.scale.x / 2)
-	card_instance.target_scale = Vector2.ONE * 0.1
-	card_instance.target_parent = target_parent
-	if card_instance.global_position.distance_to(card_instance.target_position) <= 0.01 && scale.x <=card_instance.target_scale.x + 0.01:
-		card_thrown.emit(card_instance)
-
-# func _draw():
-# 	var diff = global_position - get_global_mouse_position()
-# 	var target_rotation = rad_to_deg(diff.angle())
-# 	draw_line(position, get_local_mouse_position(), Color.RED, 10)
-# 	print(target_rotation)
 
 func _physics_process(delta):
+	if !selectable: return
 
 	if selected && game_controller.turn == 0:
 		var touch_offset = Vector2(0, size.y * scale.y)
@@ -53,7 +36,6 @@ func _physics_process(delta):
 	elif target_position != Vector2.ZERO:
 		global_position = lerp(global_position, target_position, 10 * delta)
 		scale = lerp(scale,target_scale, 10 * delta )
-		selectable = false
 		if target_parent.find_child(name) == null:
 			reparent(target_parent)
 		if old_parent != target_parent && game_controller.turn == 0:
@@ -67,10 +49,8 @@ func _physics_process(delta):
 
 	if global_position.distance_to(target_position) <= 0.01 && scale.x <=target_scale.x + 0.01:
 		card_thrown.emit(self)
-		# if position.length() >= 0.01:
-			# position = lerp(position, Vector2.ZERO, 10 * delta )
-		# else:
-			# position = Vector2.ZERO
+		selectable = false
+
 
 func _gui_input(event):
 	if event is InputEventScreenTouch  && selectable:
@@ -80,3 +60,7 @@ func _gui_input(event):
 		selected = false
 
 
+func throw_to_center():
+	target_parent = get_tree().root.get_node("GameScene/ui_canvas/card_holder")
+	target_position = get_viewport_rect().size/2 - (size / 2 * scale.x / 2)
+	target_scale = Vector2.ONE* 0.1

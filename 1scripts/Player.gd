@@ -4,15 +4,66 @@ class_name Player
 
 var hand:Array[Card]
 var bid
-signal card_thrown
 
-func throw_card():
-  hand[0].throw()
-  # if card_instance.global_position.distance_to(target_position) <= 0.01 && scale.x <=target_scale.x + 0.001:
-		# var new_parent = get_tree().root.get_node("GameScene/card_layer/card_holder")
-		# reparent(new_parent)
-		# old_parent.hide()
-		# z_index = 0
+func can_throw_card(round_card:Card, card:Card):
+	var rc_number = round_card.card_value[0]
+	var rc_suit = round_card.card_value[1]
+	var has_round_suit = false
+	var has_bigger_number = false
+
+	for c in hand:
+		if c.card_value.contains(rc_suit):
+			has_round_suit = true
+			break
+
+	if !has_round_suit: return true
+
+	for c in hand:
+		if c.card_value[0] > rc_number and c.card_value.contains(rc_suit):
+			has_bigger_number = true
+			break
+
+	if has_bigger_number:	
+		if card.card_value.contains(rc_suit) and card.card_value[0] > rc_number:
+			return true
+	elif card.card_value.contains(rc_suit):
+		return true
+
+	return false
+	
+	
+
+func throw_card(round_card):
+	var card_container = Control.new()
+	var rand_card = get_rand_from_hand()
+	while(!can_throw_card(round_card, rand_card)):
+		rand_card = get_rand_from_hand()
+
+	remove_from_hand(rand_card)
+	card_container.add_child(rand_card)
+	add_child(card_container)
+	rand_card.scale= Vector2.ONE * 0.2
+	rand_card.throw_to_center()
+
+func throw_random_card(round_card):
+	var rand_card:Card = get_rand_from_hand() 
+	remove_from_hand(rand_card)
+	if(can_throw_card(round_card, rand_card)):
+		rand_card.throw_to_center()
+
+func get_rand_from_hand():
+	var random_index = randi() % hand.size()
+	var rand_card = hand[random_index]
+	return rand_card
+
+func remove_from_hand(card_to_remove):
+	var r_index = 0
+	for i in hand.size():
+		if hand[i] == card_to_remove:
+			r_index = i
+
+	hand.remove_at(r_index)
+
 
 
 

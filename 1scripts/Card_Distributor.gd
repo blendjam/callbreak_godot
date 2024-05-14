@@ -46,7 +46,6 @@ func distribute_card():
 func _ready():
 	start_time = Time.get_ticks_msec()
 	for player in players_container.get_children():
-		print(player)
 		players_list.append(player)
 	for i in 4:
 		var temp_card = TextureRect.new()
