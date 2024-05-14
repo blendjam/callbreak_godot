@@ -1,0 +1,199 @@
+[gd_scene load_steps=12 format=3 uid="uid://dw8ro2lsbt628"]
+
+[ext_resource type="Texture2D" uid="uid://dl4lynnlh7kl2" path="res://sprites/background/Just_Carpet.png" id="1_ywhva"]
+[ext_resource type="Texture2D" uid="uid://bpko8drnf0mg7" path="res://sprites/decore/decor.png" id="2_6xdd0"]
+[ext_resource type="Texture2D" uid="uid://bsbi6km7677c3" path="res://sprites/table/Frame 15786.png" id="2_s1c4f"]
+[ext_resource type="PackedScene" uid="uid://cwl6wx50qfjfe" path="res://ui_scenes/ui_overlay.tscn" id="4_pdcsq"]
+[ext_resource type="Script" path="res://1scripts/Cards_Container.gd" id="5_13b2x"]
+[ext_resource type="Texture2D" uid="uid://tslqjjt7rcat" path="res://sprites/ui/player_avatar.png" id="5_jr3lp"]
+[ext_resource type="Texture2D" uid="uid://ceqc6cmbbrbsm" path="res://sprites/cards/0X.png" id="6_41s8a"]
+[ext_resource type="Script" path="res://1scripts/GameController.gd" id="6_bbamg"]
+[ext_resource type="Script" path="res://1scripts/Player.gd" id="6_qddbg"]
+[ext_resource type="Script" path="res://1scripts/Card_Distributor.gd" id="7_v2isk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1l7vj"]
+size = Vector2(553, 266)
+
+[node name="GameScene" type="Node2D"]
+
+[node name="bg_elements" type="CanvasLayer" parent="."]
+
+[node name="JustCarpet" type="TextureRect" parent="bg_elements"]
+visible = false
+offset_right = 418.0
+offset_bottom = 302.0
+mouse_filter = 2
+texture = ExtResource("1_ywhva")
+
+[node name="Table" type="TextureRect" parent="bg_elements"]
+offset_right = 812.0
+offset_bottom = 480.0
+mouse_filter = 2
+texture = ExtResource("2_s1c4f")
+
+[node name="Decore" type="TextureRect" parent="bg_elements"]
+visible = false
+offset_right = 418.0
+offset_bottom = 302.0
+mouse_filter = 2
+texture = ExtResource("2_6xdd0")
+
+[node name="ui_canvas" type="CanvasLayer" parent="."]
+
+[node name="ui_overlay" parent="ui_canvas" instance=ExtResource("4_pdcsq")]
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="card_holder" type="Control" parent="ui_canvas"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="player_container" type="CanvasLayer" parent="ui_canvas"]
+
+[node name="Player" type="TextureRect" parent="ui_canvas/player_container"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -80.0
+offset_right = 30.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("5_jr3lp")
+script = ExtResource("6_qddbg")
+
+[node name="Bot2" type="TextureRect" parent="ui_canvas/player_container"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -312.0
+offset_top = -127.0
+offset_right = -234.0
+offset_bottom = -41.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_jr3lp")
+script = ExtResource("6_qddbg")
+
+[node name="Bot3" type="TextureRect" parent="ui_canvas/player_container"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -174.0
+offset_right = 48.0
+offset_bottom = -88.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_jr3lp")
+script = ExtResource("6_qddbg")
+
+[node name="Bot" type="TextureRect" parent="ui_canvas/player_container"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 251.0
+offset_top = -114.0
+offset_right = 329.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_jr3lp")
+script = ExtResource("6_qddbg")
+
+[node name="card_distributor" type="Control" parent="ui_canvas" node_paths=PackedStringArray("players_container")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_v2isk")
+card_sprite = ExtResource("6_41s8a")
+players_container = NodePath("../player_container")
+
+[node name="card_layer" type="CanvasLayer" parent="."]
+
+[node name="Area2D" type="Area2D" parent="card_layer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="card_layer/Area2D"]
+position = Vector2(400, 231)
+shape = SubResource("RectangleShape2D_1l7vj")
+
+[node name="card_container" type="HBoxContainer" parent="card_layer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_top = -124.0
+offset_right = -100.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(1e-05, 1)
+pivot_offset = Vector2(300, 0)
+mouse_filter = 2
+theme_override_constants/separation = 40
+alignment = 1
+script = ExtResource("5_13b2x")
+
+[node name="Turn_Panel" type="Panel" parent="card_layer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = 77.0
+offset_right = 46.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Turn_text" type="Label" parent="card_layer/Turn_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.5
+offset_top = -8.5
+offset_right = 32.5
+offset_bottom = 8.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "Your Turn!!"
+horizontal_alignment = 1
+
+[node name="GameController" type="Node2D" parent="." node_paths=PackedStringArray("turn_panel", "card_container", "player_container")]
+script = ExtResource("6_bbamg")
+turn_panel = NodePath("../card_layer/Turn_Panel")
+card_container = NodePath("../card_layer/card_container")
+player_container = NodePath("../ui_canvas/player_container")
+
+[connection signal="input_event" from="card_layer/Area2D" to="GameController" method="_on_area_2d_input_event"]

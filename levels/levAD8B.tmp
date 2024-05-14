@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=3 uid="uid://dw8ro2lsbt628"]
+
+[ext_resource type="Texture2D" uid="uid://dl4lynnlh7kl2" path="res://sprites/background/Just_Carpet.png" id="1_ywhva"]
+[ext_resource type="Texture2D" uid="uid://bpko8drnf0mg7" path="res://sprites/decore/decor.png" id="2_6xdd0"]
+[ext_resource type="Texture2D" uid="uid://bsbi6km7677c3" path="res://sprites/table/Frame 15786.png" id="2_s1c4f"]
+[ext_resource type="PackedScene" uid="uid://cwl6wx50qfjfe" path="res://ui_scenes/ui_overlay.tscn" id="4_pdcsq"]
+[ext_resource type="Script" path="res://1scripts/Cards_Container.gd" id="5_13b2x"]
+[ext_resource type="Texture2D" uid="uid://tslqjjt7rcat" path="res://sprites/ui/player_avatar.png" id="5_jr3lp"]
+[ext_resource type="Script" path="res://1scripts/GameController.gd" id="6_bbamg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1l7vj"]
+size = Vector2(553, 266)
+
+[node name="GameScene" type="Node2D"]
+
+[node name="bg_elements" type="CanvasLayer" parent="."]
+
+[node name="JustCarpet" type="TextureRect" parent="bg_elements"]
+visible = false
+offset_right = 418.0
+offset_bottom = 302.0
+mouse_filter = 2
+texture = ExtResource("1_ywhva")
+
+[node name="Table" type="TextureRect" parent="bg_elements"]
+offset_right = 812.0
+offset_bottom = 480.0
+mouse_filter = 2
+texture = ExtResource("2_s1c4f")
+
+[node name="Decore" type="TextureRect" parent="bg_elements"]
+visible = false
+offset_right = 418.0
+offset_bottom = 302.0
+mouse_filter = 2
+texture = ExtResource("2_6xdd0")
+
+[node name="ui_canvas" type="CanvasLayer" parent="."]
+
+[node name="ui_overlay" parent="ui_canvas" instance=ExtResource("4_pdcsq")]
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="card_layer" type="CanvasLayer" parent="."]
+
+[node name="card_holder" type="Control" parent="card_layer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="card_layer/card_holder"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_jr3lp")
+
+[node name="Area2D" type="Area2D" parent="card_layer"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="card_layer/Area2D"]
+position = Vector2(400, 231)
+shape = SubResource("RectangleShape2D_1l7vj")
+
+[node name="card_container" type="HBoxContainer" parent="card_layer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 126.0
+offset_top = -124.0
+offset_right = -125.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 40
+alignment = 1
+script = ExtResource("5_13b2x")
+
+[node name="GameController" type="Node2D" parent="."]
+script = ExtResource("6_bbamg")
+
+[connection signal="input_event" from="card_layer/Area2D" to="card_layer/card_container" method="_on_area_2d_input_event"]
