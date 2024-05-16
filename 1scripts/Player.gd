@@ -33,23 +33,26 @@ func can_throw_card(round_card:Card, card:Card):
 	
 	
 
-func throw_card(round_card):
+func throw_card(round_card, target_rotation = 0):
 	var card_container = Control.new()
 	var rand_card = get_rand_from_hand()
-	while(!can_throw_card(round_card, rand_card)):
-		rand_card = get_rand_from_hand()
+	if round_card != null:
+		while(!can_throw_card(round_card, rand_card)):
+			rand_card = get_rand_from_hand()
 
 	remove_from_hand(rand_card)
 	card_container.add_child(rand_card)
 	add_child(card_container)
 	rand_card.scale= Vector2.ONE * 0.2
-	rand_card.throw_to_center()
+	rand_card.throw_to_center(target_rotation)
+	return rand_card
 
 func throw_random_card(round_card):
 	var rand_card:Card = get_rand_from_hand() 
 	remove_from_hand(rand_card)
 	if(can_throw_card(round_card, rand_card)):
 		rand_card.throw_to_center()
+	return rand_card
 
 func get_rand_from_hand():
 	var random_index = randi() % hand.size()
